@@ -1,0 +1,83 @@
+#include <iostream>
+#include <unordered_map>
+#include <list>
+
+using namespace std;
+
+class LRUCache {
+private:
+    int capacity;
+
+   
+    list<pair<int, int>> cache;
+
+    // Map key -> iterator of list
+    unordered_map<int, list<pair<int, int>>::iterator> mp;
+
+public:
+    LRUCache(int capacity) {
+        this->capacity = capacity;
+    }
+
+    int get(int key) {
+
+        
+        if (mp.find(key) == mp.end()) {
+            return -1;
+        }
+
+        
+        auto it = mp[key];
+        int value = it->second;
+
+        cache.erase(it);
+        cache.push_front({key, value});
+
+        mp[key] = cache.begin();
+
+        return value;
+    }
+
+    void put(int key, int value) {
+
+        
+        if (mp.find(key) != mp.end()) {
+
+            cache.erase(mp[key]);
+        }
+
+        
+        else if (cache.size() == capacity) {
+
+            auto last = cache.back();
+            mp.erase(last.first);
+            cache.pop_back();
+        }
+
+        
+        cache.push_front({key, value});
+        mp[key] = cache.begin();
+    }
+};
+
+int main() {
+
+    LRUCache lru(2);
+
+    lru.put(1, 1);
+    lru.put(2, 2);
+
+    cout << lru.get(1) << endl;
+
+    lru.put(3, 3);
+
+    cout << lru.get(2) << endl;
+
+    lru.put(4, 4);
+
+    cout << lru.get(1) << endl;
+    cout << lru.get(3) << endl;
+    cout << lru.get(4) << endl;
+
+    return 0;
+}
