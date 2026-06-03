@@ -1,0 +1,41 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    bool isVowel(char c) {
+        c = tolower(c);
+        return (c == 'a' || c == 'e' || c == 'i' ||
+                c == 'o' || c == 'u');
+    }
+
+    string reverseVowels(string s) {
+        int left = 0, right = s.length() - 1;
+
+        while (left < right) {
+            while (left < right && !isVowel(s[left]))
+                left++;
+
+            while (left < right && !isVowel(s[right]))
+                right--;
+
+            swap(s[left], s[right]);
+            left++;
+            right--;
+        }
+
+        return s;
+    }
+};
+
+int main() {
+    string s = "hello";
+
+    Solution obj;
+    string result = obj.reverseVowels(s);
+
+    cout << "Output: " << result << endl;
+
+    return 0;
+}
