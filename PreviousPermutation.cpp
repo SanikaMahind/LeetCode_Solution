@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> prevPermOpt1(vector<int>& arr) {
+    int n = arr.size();
+
+   
+    int i = n - 2;
+    while (i >= 0 && arr[i] <= arr[i + 1])
+        i--;
+
+    if (i < 0)
+        return arr;
+
+    
+    int j = n - 1;
+    while (arr[j] >= arr[i] || (j > 0 && arr[j] == arr[j - 1]))
+        j--;
+
+    swap(arr[i], arr[j]);
+
+    return arr;
+}
+
+int main() {
+    vector<int> arr = {3, 2, 1};
+
+    vector<int> ans = prevPermOpt1(arr);
+
+    cout << "Previous Permutation: ";
+    for (int x : ans)
+        cout << x << " ";
+
+    return 0;
+}
